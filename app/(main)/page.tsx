@@ -1,3 +1,8 @@
+"use client";
+
+import { SignInButton, UserButton } from "@clerk/nextjs";
+import { Authenticated, Unauthenticated, useQuery } from "convex/react";
+
 export default function Home() {
   return (
     <main className="mt-20 flex flex-col items-center justify-center gap-2">
@@ -11,6 +16,15 @@ export default function Home() {
           <li>Zustand</li>
           <li>Typescript</li>
         </ul>
+      </div>
+      <div>
+        <Unauthenticated>
+          <SignInButton />
+        </Unauthenticated>
+        <Authenticated>
+          <UserButton />
+          <p>Content</p>
+        </Authenticated>
       </div>
     </main>
   );
