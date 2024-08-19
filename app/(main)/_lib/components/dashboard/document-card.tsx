@@ -1,4 +1,5 @@
 import { FC } from "react";
+import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -27,7 +28,9 @@ const DocumentCard: FC<DocumentCardProps> = ({ document }) => {
         <p>Card Content Sample</p>
       </CardContent>
       <CardFooter className="justify-end">
-        <Button variant={"secondary"}>View</Button>
+        <Button variant={"secondary"} asChild>
+          <Link href={`/dashboard/files/${document._id}`}>View</Link>
+        </Button>
       </CardFooter>
     </Card>
   );

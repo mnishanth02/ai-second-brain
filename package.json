@@ -14,6 +14,7 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@azure/openai": "2.0.0-beta.1",
     "@clerk/nextjs": "^5.3.1",
     "@hookform/resolvers": "^3.9.0",
     "@ianvs/prettier-plugin-sort-imports": "^4.3.1",
@@ -61,6 +62,7 @@
     "next": "14.2.4",
     "next-themes": "^0.3.0",
     "nextjs-toploader": "^1.6.12",
+    "openai": "^4.56.0",
     "prettier-plugin-tailwindcss": "^0.6.6",
     "react": "^18.3.1",
     "react-day-picker": "^8.10.1",

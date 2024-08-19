@@ -1,7 +1,7 @@
 "use client";
 
 import { FC } from "react";
-import { useMutation, useQuery } from "convex/react";
+import { useQuery } from "convex/react";
 
 import { api } from "@/convex/_generated/api";
 import DocumentCard from "../_lib/components/dashboard/document-card";
@@ -11,7 +11,6 @@ interface DashboardPageProps {}
 
 const DashboardPage: FC<DashboardPageProps> = ({}) => {
   const documents = useQuery(api.documents.getDocuments);
-  const createDocument = useMutation(api.documents.createDocuments);
   return (
     <div className="flex flex-col">
       <h1 className="p-5 text-3xl font-light"> My Documents</h1>

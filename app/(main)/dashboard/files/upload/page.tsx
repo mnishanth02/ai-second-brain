@@ -1,19 +1,16 @@
 "use client";
 
 import React, { useCallback, useState } from "react";
-import { useMutation } from "convex/react";
-import { Loader2 } from "lucide-react";
 import { FileWithPath, useDropzone } from "react-dropzone";
 import { Controller, FormProvider } from "react-hook-form";
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import FileUploader from "@/components/common/file-uploader";
 import LoadingButton from "@/components/common/loadingButton";
 
-import { api } from "@/convex/_generated/api";
-import { useSignInForm } from "../../_lib/hooks/useDocUpload";
+import { useSignInForm } from "../../../_lib/hooks/useDocUpload";
 
 interface DocumentUploadScreenProps {
   // Add any props if needed
@@ -21,18 +18,6 @@ interface DocumentUploadScreenProps {
 
 const DocumentUploadScreen: React.FC<DocumentUploadScreenProps> = () => {
   const { methods, onHandleSubmit } = useSignInForm();
-
-  const [file, setFile] = useState<FileWithPath | null>(null);
-  const [error, setError] = useState<string>("");
-
-  const onDrop = useCallback((acceptedFiles: FileWithPath[]) => {
-    if (acceptedFiles.length > 0) {
-      setFile(acceptedFiles[0]);
-      setError("");
-    }
-  }, []);
-
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   return (
     <div className="mx-auto mt-10 max-w-md rounded-lg bg-background p-6 shadow-md">
@@ -50,32 +35,26 @@ const DocumentUploadScreen: React.FC<DocumentUploadScreenProps> = () => {
           </div>
           <div className="mb-4">
             <Label>Document</Label>
-            <div
-              {...getRootProps()}
-              className={`mt-1 rounded-md border-2 border-dashed p-6 transition-colors ${
-                isDragActive
-                  ? "border-primary bg-primary/10"
-                  : "border-secondary bg-background hover:border-primary/50"
-              }`}
-            >
-              <input {...getInputProps()} />
-              {file ? (
-                <p className="text-sm text-foreground/70">{file.name}</p>
-              ) : (
-                <p className="text-sm text-foreground/70">
-                  {isDragActive
-                    ? "Drop the file here"
-                    : "Drag & drop a file here, or click to select"}
-                </p>
+
+            <Controller
+              name="file"
+              control={methods.control}
+              defaultValue={methods.formState.defaultValues?.file as File[]}
+              render={({ field }) => (
+                <FileUploader
+                  value={field.value}
+                  onValueChange={field.onChange}
+                  maxFileCount={4}
+                  maxSize={4 * 1024 * 1024}
+                  // progresses={progresses}
+                  // pass the onUpload function here for direct upload
+                  // onUpload={uploadFiles}
+                  disabled={false}
+                ></FileUploader>
               )}
-            </div>
+            />
           </div>
-          {error && (
-            <Alert variant="destructive" className="mb-4">
-              <AlertTitle>Error</AlertTitle>
-              <AlertDescription>{error}</AlertDescription>
-            </Alert>
-          )}
+
           <LoadingButton loadingText="Uploading..." isLoading={methods.formState.isSubmitting}>
             Upload Document
           </LoadingButton>

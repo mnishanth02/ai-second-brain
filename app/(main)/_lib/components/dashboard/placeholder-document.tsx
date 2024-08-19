@@ -11,7 +11,7 @@ interface PlaceholderDocumentProps {}
 const PlaceholderDocument: FC<PlaceholderDocumentProps> = ({}) => {
   const router = useRouter();
   const handleClick = () => {
-    router.push("/dashboard/upload");
+    router.push("/dashboard/files/upload");
   };
   return (
     <Button

@@ -16,7 +16,7 @@ export async function Header() {
         </div>
         <div className="flex items-center justify-around">
           <Button asChild variant={"link"} className="">
-            <Link href={"/document"} className="text-secondary-foreground">
+            <Link href={"/dashboard"} className="text-secondary-foreground">
               My Documents
             </Link>
           </Button>
@@ -26,7 +26,7 @@ export async function Header() {
             </Link>
           </Button>
           <Button asChild variant={"outline"} size={"icon"}>
-            <Link href={"/dashboard/upload"}>
+            <Link href={"/dashboard/files/upload"}>
               <FilePlus2 className="h-5 w-5 text-accent-foreground" />
             </Link>
           </Button>
