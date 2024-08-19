@@ -8,6 +8,9 @@ export const env = createEnv({
     NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
     CLERK_SECRET_KEY: z.string().min(1),
     CONVEX_DEPLOYMENT: z.string().min(1),
+    AZURE_OPENAI_ENDPOINT: z.string().min(1),
+    AZRE_OPENAI_API_KEY: z.string().min(1),
+    AZURE_OPENAI_MODEL: z.string().min(1),
   },
   client: {
     NEXT_PUBLIC_APP_URL: z.string().min(1),
