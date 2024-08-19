@@ -6,7 +6,16 @@ import { ChatCompletionCreateParamsNonStreaming } from "openai/resources/index.m
 
 import { api, internal } from "./_generated/api";
 import { Id } from "./_generated/dataModel";
-import { action, internalQuery, mutation, MutationCtx, query, QueryCtx } from "./_generated/server";
+import {
+  action,
+  internalAction,
+  internalMutation,
+  internalQuery,
+  mutation,
+  MutationCtx,
+  query,
+  QueryCtx,
+} from "./_generated/server";
 
 const client = new AzureOpenAI({
   apiKey: process.env.AZRE_OPENAI_API_KEY,
@@ -106,10 +115,72 @@ export const createDocuments = mutation({
     }
     const documentId = await ctx.db.insert("documents", {
       title: args.title,
+      description: "",
       fileIds: args.fileIds,
       tokenIdentifier: userId,
     });
-    return documentId;
+
+    await ctx.scheduler.runAfter(0, internal.documents.generateDocumentDescription, {
+      fileId: args.fileIds[0],
+      documentId,
+    });
+  },
+});
+
+export const generateDocumentDescription = internalAction({
+  args: {
+    fileId: v.id("_storage"),
+    documentId: v.id("documents"),
+  },
+  async handler(ctx, args) {
+    const file = await ctx.storage.get(args.fileId);
+
+    if (!file) {
+      throw new ConvexError("File not found");
+    }
+
+    const text = await file.text();
+
+    const chatCompletion: ChatCompletionCreateParamsNonStreaming = {
+      messages: [
+        {
+          role: "system",
+          content: `You are a helpful assistant to generate content and here is a Content : ${text}`,
+        },
+        {
+          role: "user",
+          content: `please generate 1 sentence description for this document (not more than 50 words).`,
+        },
+      ],
+      model: process.env.AZURE_OPENAI_MODEL!,
+      max_tokens: 200,
+    };
+
+    const result = await client.chat.completions.create(chatCompletion);
+
+    const description =
+      result.choices[0].message.content ?? "could not figure out the description for this document";
+
+    // const embedding = await embed(description);
+
+    await ctx.runMutation(internal.documents.updateDocumentDescription, {
+      documentId: args.documentId,
+      description: description,
+    });
+  },
+});
+
+export const updateDocumentDescription = internalMutation({
+  args: {
+    documentId: v.id("documents"),
+    description: v.string(),
+    // embedding: v.array(v.float64()),
+  },
+  async handler(ctx, args) {
+    await ctx.db.patch(args.documentId, {
+      description: args.description,
+      // embedding: args.embedding,
+    });
   },
 });
 
