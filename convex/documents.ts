@@ -205,8 +205,8 @@ export const askQuestions = action({
       throw new ConvexError("No files found");
     }
 
-    const text = await files[0]?.text(); // TODO  Retrieving only First file
-    console.log("File text ->", text);
+    const fileContent = await files[0]?.text(); // TODO  Retrieving only First file
+    console.log("File text ->", fileContent);
 
     // Add user question to DB
     await ctx.runMutation(internal.chats.createChatRecord, {
@@ -218,7 +218,10 @@ export const askQuestions = action({
 
     const chatCompletion: ChatCompletionCreateParamsNonStreaming = {
       messages: [
-        { role: "system", content: `You are a helpful assistant and here is a text File: ${text}` },
+        {
+          role: "system",
+          content: `You are a helpful assistant and here is a text File: ${fileContent}`,
+        },
         { role: "user", content: `please answer this question: ${args.question}` },
       ],
       model: process.env.AZURE_OPENAI_MODEL!,
