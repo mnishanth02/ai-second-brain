@@ -17,7 +17,7 @@ const PlaceholderDocument: FC<PlaceholderDocumentProps> = ({}) => {
     <Button
       onClick={handleClick}
       variant={"outline"}
-      className="flex h-80 w-64 flex-col items-center rounded-xl drop-shadow-md"
+      className="flex h-80 w-64 flex-col items-center gap-4 rounded-xl text-lg drop-shadow-md"
     >
       <PlusCircleIcon className="h-16 w-16" />
       Add a document
