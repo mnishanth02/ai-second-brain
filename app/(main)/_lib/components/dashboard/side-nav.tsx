@@ -33,7 +33,7 @@ export default function SideNav() {
               "flex items-center gap-2 text-xl font-light hover:text-primary dark:hover:text-primary",
               {
                 "rounded-r-lg border-l-4 border-primary bg-secondary/50 px-2 py-1 text-primary dark:text-primary":
-                  pathname.endsWith("/files"),
+                  pathname.includes("/files"),
               }
             )}
             href="/dashboard/files"
@@ -48,7 +48,7 @@ export default function SideNav() {
               "flex items-center gap-2 text-xl font-light hover:text-primary dark:hover:text-primary",
               {
                 "rounded-r-lg border-l-4 border-primary bg-secondary/50 px-2 py-1 text-primary dark:text-primary":
-                  pathname.endsWith("/notes"),
+                  pathname.includes("/notes"),
               }
             )}
             href="/dashboard/notes"
