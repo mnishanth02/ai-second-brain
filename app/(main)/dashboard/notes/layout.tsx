@@ -56,7 +56,7 @@ export default function NotesLayout({ children }: { children: ReactNode }) {
 
       {notes && notes.length > 0 && (
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-          <ScrollArea className="h-[calc(100vh-200px)]">
+          <ScrollArea className="h-[calc(100vh-80vh)] md:h-[calc(100vh-200px)]">
             <ul className="space-y-2 pr-4">
               {notes?.map((note) => (
                 <li

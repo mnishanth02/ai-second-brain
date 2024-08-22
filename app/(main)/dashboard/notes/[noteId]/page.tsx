@@ -32,7 +32,7 @@ export default function NotePage() {
 
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center justify-between">
+      <CardHeader className="flex flex-row items-center justify-between px-6 py-2">
         <CardTitle className="text-2xl font-bold">Note</CardTitle>
         <DeleteNoteButton noteId={note._id} />
       </CardHeader>

@@ -4,7 +4,8 @@ import { FC } from "react";
 import Image from "next/image";
 import { useQuery } from "convex/react";
 
-import { Card } from "@/components/ui/card";
+import { Card } from "@/components/ui/card"; // Assuming you're using shadcn/ui
+
 import { Skeleton } from "@/components/ui/skeleton";
 
 import { api } from "@/convex/_generated/api";
@@ -13,32 +14,26 @@ import PlaceholderDocument from "../../_lib/components/dashboard/placeholder-doc
 
 interface FilesProps {}
 
-const FilesPage: FC<FilesProps> = ({}) => {
+const FilesPage: FC<FilesProps> = () => {
   const documents = useQuery(api.documents.getDocuments);
 
   return (
-    <div className="flex flex-col p-5">
+    <div className="container mx-auto px-4 py-8">
       <h1 className="mb-6 text-3xl font-light">My Documents</h1>
 
       {!documents && <LoadingSkeleton />}
       {documents && (
-        <>
-          {documents && documents.length > 0 ? (
-            <DocumentGrid documents={documents} />
-          ) : (
-            <EmptyState />
-          )}
-        </>
+        <div className="min-h-[50vh] w-full">
+          {documents.length > 0 ? <DocumentGrid documents={documents} /> : <EmptyState />}
+        </div>
       )}
     </div>
   );
 };
 
-export default FilesPage;
-
 const LoadingSkeleton: FC = () => (
   <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-    {[...Array(7)].map((_, i) => (
+    {[...Array(8)].map((_, i) => (
       <Card key={i} className="flex h-[200px] flex-col justify-between p-6">
         <Skeleton className="h-[20px] w-full rounded" />
         <Skeleton className="h-[20px] w-3/4 rounded" />
@@ -50,7 +45,7 @@ const LoadingSkeleton: FC = () => (
 );
 
 const EmptyState: FC = () => (
-  <div className="flex flex-col items-center justify-center gap-8 py-12">
+  <div className="flex h-[50vh] flex-col items-center justify-center gap-8">
     <PlaceholderDocument />
     <Image
       src="/documents.svg"
@@ -70,3 +65,5 @@ const DocumentGrid: FC<{ documents: any[] }> = ({ documents }) => (
     ))}
   </div>
 );
+
+export default FilesPage;
